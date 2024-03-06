@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm"
 import { Regione } from "./Regione"
 
 @Entity()
@@ -16,7 +16,7 @@ export class User {
     @Column()
     eta: number
 
-    @ManyToOne(() => Regione, (regione) => regione.nome)
-    regione: Regione[]
+    @ManyToOne(() => Regione, (regione) => regione.users)
+    regione: Regione
 
 }

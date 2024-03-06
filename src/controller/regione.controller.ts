@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Param, Body, Req, Res } from '@nest
 import { Request, Response } from 'express';
 import { RegioneService } from '../service/regione.service';
 
-@Controller('users')
+@Controller('regioni')
 export class RegioneController {
   constructor(private readonly regioneService: RegioneService) {}
 
