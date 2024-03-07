@@ -1,15 +1,19 @@
+import "reflect-metadata";
 import { DataSource } from "typeorm";
+import { Regione } from "./entity/Regione";
+import { Sim } from "./entity/Sim";
+import { User } from "./entity/User";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
-    port: 5432,
-    username: "utente1",
-    password: "12345",
+    port: 3306,
+    username: "root",
+    password: "",
     database: "nest",
     synchronize: true,
     logging: true,
-    entities: [],
+    entities: [User, Regione, Sim],
     subscribers: [],
     migrations: [],
 })
