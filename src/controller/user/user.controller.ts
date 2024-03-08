@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { UserService } from 'src/service/userservice/userservice.service';
+import { UsersService } from 'src/users/users.service';
 
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService, ) {}
+  constructor(private readonly userService: UsersService, ) {}
 
   @Get()
   async getUsers(@Req() req: Request, @Res() res: Response) {
