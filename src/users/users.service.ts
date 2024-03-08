@@ -41,7 +41,7 @@ async getUserById(id: number, res: Response) {
 
 async createUser(req: Request, res: Response) {
     try {
-        const { email, password, nome, cognome, eta } = req.body;
+        const { email, password, nome, cognome, eta, regione } = req.body;
         
         // Controlla se l'email è nel formato corretto
         if (!validateEmail(email)) {
@@ -51,7 +51,7 @@ async createUser(req: Request, res: Response) {
         console.log("Parseint : ", x);
         console.log("Nest.salt : " , process.env['NEST_SALT'] )
         const hashedPassword = await bcrypt.hash(password, x);
-        const newUser = await AppDataSource.getRepository(User).create({ email, password: hashedPassword, nome, cognome, eta });
+        const newUser = await AppDataSource.getRepository(User).create({ email, password: hashedPassword, nome, cognome, eta, regione });
         const savedUser = await AppDataSource.getRepository(User).save(newUser);
         res.status(201).json(savedUser);
     } catch (error) {
