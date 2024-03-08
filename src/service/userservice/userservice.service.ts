@@ -48,7 +48,7 @@ export class UserService {
                 return res.status(400).json({ error: "Invalid email format" });
             }
     
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const hashedPassword = await bcrypt.hash(password, process.env.NEST_SALT);
             const newUser = await AppDataSource.getRepository(User).create({ email, password: hashedPassword, nome, cognome, eta });
             const savedUser = await AppDataSource.getRepository(User).save(newUser);
             res.status(201).json(savedUser);
