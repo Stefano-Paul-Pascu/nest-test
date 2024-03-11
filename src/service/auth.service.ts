@@ -5,6 +5,7 @@ import { jwtConstants } from 'src/constant/constants';
 
 @Injectable()
 export class AuthService {
+
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
@@ -19,6 +20,6 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
-
   }
+
 }

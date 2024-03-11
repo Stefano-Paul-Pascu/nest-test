@@ -11,6 +11,8 @@ import {
 import { AuthService } from '../service/auth.service';
 import { Public } from '../decorators/public.decorators';
 
+const validTokens: string[] = [];
+
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -26,4 +28,6 @@ export class AuthController {
   getProfile(@Request() req) {
     return req.user;
   }
+
+  
 }
