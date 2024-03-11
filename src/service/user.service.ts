@@ -15,7 +15,7 @@ export class UserService {
 
   async getUsers(req: Request, res: Response) {
     try {
-        const users = await AppDataSource.getRepository(User).find();
+        const users = await AppDataSource.getRepository(User).find({ relations: ['regione'] });
         res.json(users);
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
@@ -24,7 +24,7 @@ export class UserService {
 
 async getUserById(id: number, res: Response) {
     try {
-        const user = await AppDataSource.getRepository(User).findOneById(id);
+        const user = await AppDataSource.getRepository(User).findOne({ where: { id }, relations: ['regione'] });
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -39,17 +39,20 @@ async getUserById(id: number, res: Response) {
 
 async createUser(req: Request, res: Response) {
     try {
-        const { email, password, nome, cognome, eta } = req.body;
+        const { email, password, nome, cognome, eta, regione } = req.body;
         
         // Controlla se l'email è nel formato corretto
         if (!validateEmail(email)) {
             return res.status(400).json({ error: "Invalid email format" });
         }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await AppDataSource.getRepository(User).create({ email, password: hashedPassword, nome, cognome, eta });
+        const SALT = parseInt(process.env['NEST_SALT']);
+        console.log("Parseint : ", SALT);
+        console.log("Nest.salt : " , process.env['NEST_SALT'] )
+        const hashedPassword = await bcrypt.hash(password, SALT);
+        const newUser = await AppDataSource.getRepository(User).create({ email, password: hashedPassword, nome, cognome, eta, regione });
         const savedUser = await AppDataSource.getRepository(User).save(newUser);
         res.status(201).json(savedUser);
+
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
     }
