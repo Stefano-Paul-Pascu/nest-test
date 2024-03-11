@@ -15,26 +15,58 @@ function validateEmail(email: string): boolean {
 export class UsersService {
 
 
-  async getUsers(req: Request, res: Response) {
+//   async getUsers(req: Request, res: Response) {
+//     try {
+//         const users = await AppDataSource.getRepository(User).find();
+//         res.json(users);
+//     } catch (error) {
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// }
+
+async getUsers(req: Request, res: Response) {
     try {
-        const users = await AppDataSource.getRepository(User).find();
+        const users = await AppDataSource.getRepository(User)
+            .createQueryBuilder("user")
+            .leftJoinAndSelect("user.regione", "regione")
+            .getMany();
         res.json(users);
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
     }
 }
 
+
+// async getUserById(id: number, res: Response) {
+//     try {
+//         const user = await AppDataSource.getRepository(User).findOneById(id);
+//         if (!user) {
+//             return res.status(404).json({ error: "User not found" });
+//         }
+//         res.json(user);
+//     } catch (error) {
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// }
+
 async getUserById(id: number, res: Response) {
     try {
-        const user = await AppDataSource.getRepository(User).findOneById(id);
+        const user = await AppDataSource.getRepository(User)
+            .createQueryBuilder("user")
+            .leftJoinAndSelect("user.regione", "regione")
+            .where("user.id = :id", { id })
+            .getOne();
+
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
+
         res.json(user);
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
 
 
 
